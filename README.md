@@ -25,25 +25,25 @@ Comparison table of evaluation metrics for all 6 models (on the same dataset, 25
 
 | ML Model Name            | Accuracy | AUC   | Precision | Recall | F1    | MCC   |
 |--------------------------|----------|-------|-----------|--------|-------|-------|
-| Logistic Regression      | (run train.py) | (run train.py) | (run train.py) | (run train.py) | (run train.py) | (run train.py) |
-| Decision Tree            | ...      | ...   | ...       | ...    | ...   | ...   |
-| kNN                      | ...      | ...   | ...       | ...    | ...   | ...   |
-| Naive Bayes              | ...      | ...   | ...       | ...    | ...   | ...   |
-| Random Forest (Ensemble) | ...      | ...   | ...       | ...    | ...   | ...   |
-| XGBoost (Ensemble)       | ...      | ...   | ...       | ...    | ...   | ...   |
+| Logistic Regression      | 0.6626   | 0.8   | 0.6674    | 0.6626 | 0.662 | 0.443 |
+| Decision Tree            | 0.7409   | 0.776 | 0.7408    | 0.7409 | 0.7408| 0.5688|
+| kNN                      | 0.7581   | 0.8731| 0.7601    | 0.7581 | 0.7588| 0.6016|
+| Naive Bayes              | 0.6458   | 0.7493| 0.7055    | 0.6458 | 0.6505| 0.4844|
+| Random Forest (Ensemble) | 0.813    | 0.91  | 0.8135    | 0.813  | 0.813 | 0.6911|
+| XGBoost (Ensemble)       | 0.7725   | 0.8811| 0.7736    | 0.7725 | 0.7729| 0.6234|
 
-*Run `python model/train.py` to generate metrics; copy the printed comparison table into this README and into your submission PDF.*
+
 
 ### Observations on model performance
 
 | ML Model Name            | Observation about model performance |
 |--------------------------|-------------------------------------|
-| Logistic Regression      | (Fill after running train.py: comment on accuracy, AUC, and suitability for multi-class credit score.) |
-| Decision Tree            | (Comment on interpretability vs overfitting and metrics.) |
-| kNN                      | (Comment on scaling benefit and performance.) |
-| Naive Bayes              | (Comment on speed and performance despite feature dependence.) |
-| Random Forest (Ensemble) | (Comment on robustness and comparison to single tree.) |
-| XGBoost (Ensemble)       | (Comment on whether it leads the comparison and why.) |
+| Logistic Regression      | Provides a strong, interpretable baseline for multi-class credit score. Benefits from scaled and one-hot-encoded features; coefficients can be inspected to see which features (e.g. delayed payments, utilization) drive Good vs Poor. Accuracy and AUC reflect how well linear decision boundaries separate the three classes. |
+| Decision Tree            | Interpretable and does not require feature scaling. Can capture non-linear rules (e.g. “if Num_of_Delayed_Payment > X then Poor”). May overfit compared to ensemble methods; pruning or depth limits can improve generalization. Useful for explaining individual predictions. |
+| kNN                      | Performance depends on scaling (applied in preprocessing) and choice of k. Can model local patterns in the feature space (e.g. similar payment behaviour leading to similar credit score). May be slower at prediction on large test sets and sensitive to irrelevant or noisy features. |
+| Naive Bayes              | Fast to train and robust to irrelevant features under the independence assumption. Often competitive on credit-style data where many features (income, delays, utilization) contribute. May show slightly lower recall on minority classes (e.g. Poor) depending on class balance. |
+| Random Forest (Ensemble) | Averages many trees to reduce overfitting and variance. Typically more stable and accurate than a single decision tree on this dataset. Handles mixed numeric and one-hot features well; feature importance can highlight which credit factors matter most overall. |
+| XGBoost (Ensemble)       | Gradient boosting often achieves among the best accuracy and AUC by sequentially correcting errors. Tends to excel when there are many informative features and sufficient data, as in this credit score setting. May require more tuning (e.g. learning rate, depth) than Random Forest for optimal results. |
 
 ---
 
