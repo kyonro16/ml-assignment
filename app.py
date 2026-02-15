@@ -32,10 +32,18 @@ def load_models_and_artifacts():
     input_fn_path = os.path.join(MODEL_DIR, "input_feature_names.joblib")
     if not os.path.isfile(preprocessor_path) or not os.path.isfile(input_fn_path):
         return None, None, None, None, {}
-    preprocessor = joblib.load(preprocessor_path)
-    input_feature_names = joblib.load(input_fn_path)
-    label_encoder = joblib.load(os.path.join(MODEL_DIR, "label_encoder.joblib"))
-    class_names = joblib.load(os.path.join(MODEL_DIR, "class_names.joblib"))
+    try:
+        preprocessor = joblib.load(preprocessor_path)
+        input_feature_names = joblib.load(input_fn_path)
+        label_encoder = joblib.load(os.path.join(MODEL_DIR, "label_encoder.joblib"))
+        class_names = joblib.load(os.path.join(MODEL_DIR, "class_names.joblib"))
+    except (AttributeError, ModuleNotFoundError) as e:
+        raise RuntimeError(
+            "Failed to load saved models: version mismatch between the environment where "
+            "you ran 'python model/train.py' and this deployment. Fix: install the exact "
+            "versions in requirements.txt, run 'python model/train.py' again, commit the "
+            "updated model/saved/ folder, and redeploy."
+        ) from e
 
     display_names = [
         "Logistic Regression",
